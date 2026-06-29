@@ -367,8 +367,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 35
-  m_fontSizeBase: 35
+  m_fontSize: 25
+  m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -459,7 +459,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 20.12, y: 0}
+  m_AnchoredPosition: {x: 20.12, y: 100}
   m_SizeDelta: {x: 1920, y: 300}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &64398990
@@ -842,8 +842,9 @@ GameObject:
   m_Component:
   - component: {fileID: 91909862}
   - component: {fileID: 91909863}
+  - component: {fileID: 91909864}
   m_Layer: 0
-  m_Name: PatientAudio
+  m_Name: PatientAudioController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -961,6 +962,23 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &91909864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 91909861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 271371977ec01e8458ee642290c2b7b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioMouthController
+  skinnedMeshRenderer: {fileID: 8776441366429520725}
+  mouthBlendshapeIndex: 1
+  threshold: 0.001
+  sensitivity: 10000
+  smoothSpeed: 15
 --- !u!1001 &92421184
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3879,8 +3897,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 35
-  m_fontSizeBase: 35
+  m_fontSize: 25
+  m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -4432,8 +4450,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40
-  m_fontSizeBase: 40
+  m_fontSize: 35
+  m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -5305,7 +5323,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 940, y: -125}
-  m_SizeDelta: {x: 600, y: 250}
+  m_SizeDelta: {x: 600, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &905660302
 MonoBehaviour:
@@ -5987,76 +6005,129 @@ MonoBehaviour:
   - sceneID: scene_02
     patientText: "\u201EHallo\u2026? Wo\u2026 bin ich denn hier? \r\nIch wei\xDF
       es gerade nicht mehr.\r\nKurze Pause. \r\nWissen Sie vielleicht, was hier los
-      ist?"
+      ist?\""
     audioFile: {fileID: 8300000, guid: 2982d7570e5b6db47a0715ced94f479f, type: 3}
     systemOverlayText: "Der leicht an Demenz erkrankte Herr M\xFCller ist verunsichert.
       Begr\xFC\xDFen Sie den Patienten ruhig und klar.  W\xE4hlen Sie dazu die passende
       Reaktion."
     options:
-    - text: "Guten Tag, Herr M\xFCller. Ich bin Pflegefachfrau Tina. Sie sind im
-        Krankenhaus, und ich bin jetzt bei Ihnen."
+    - text: "\u201EGuten Tag, Herr M\xFCller. Ich bin Pflegefachfrau Tina. Sie sind
+        im Krankenhaus, und ich bin jetzt bei Ihnen.\u201C"
       score: 5
       feedbackIntern: "Orientierung klar, ruhig, pers\xF6nlich."
-      feedbackSystem: "Ruhige Orientierung \u2713  Stressabbau \u2713  Vertrauen
-        vermittelt \u2713"
-      patientReaction: "Herr M\xFCller schaut zum Nutzer und wirkt etwas erleichtert.
-        Er spricht: \r\n\u201EAh\u2026 ja\u2026 danke. Ich vergesse das manchmal.\u201C
-        \r\nKurze Pause. \r\n\u201ESch\xF6n, dass Sie da sind.\u201C"
+      feedbackSystem: Ruhige Orientierung (Ja)  Stressabbau (Ja)  Vertrauen vermittelt
+        (Ja)
+      patientReaction: "\u201EAh\u2026 ja\u2026 danke. Ich vergesse das manchmal.\u201C
+        \r\n\r\n\u201ESch\xF6n, dass Sie da sind.\u201C"
       patientReactionAudio: {fileID: 8300000, guid: 8d68920cc00834c4c8494b672f118a5e, type: 3}
       nextSceneID: scene_03
-    - text: "Keine Sorge, Herr M\xFCller. Es ist alles in Ordnung."
+    - text: "\u201EKeine Sorge, Herr M\xFCller. Es ist alles in Ordnung.\u201C"
       score: 3
       feedbackIntern: Es wirkt beruhigend, aber es fehlt eine konkrete situative
         Orientierung.
       feedbackSystem: Beruhigend, aber Frage nach dem Ort bleibt weiterhin unklar. 
         Eine konkrete situative Orientierung hilft bei Verunsicherung.
-      patientReaction: "Herr M\xFCller schaut zum Nutzer und wirkt weiter verwirrt.
-        Er spricht: \r\n\u201EJa\u2026 aber wo\u2026 bin ich jetzt?\u201C \r\nDanach
-        f\xFChrt das System leicht weiter."
+      patientReaction: "\u201EJa\u2026 aber wo\u2026 bin ich jetzt?\u201C"
       patientReactionAudio: {fileID: 8300000, guid: 69e0b5c54b1a628499e075653d977928, type: 3}
       nextSceneID: scene_03
-    - text: Das wissen Sie doch. Sie sind im Krankenhaus.
+    - text: "\u201EDas wissen Sie doch. Sie sind im Krankenhaus.\u201C"
       score: 0
       feedbackIntern: "Konfrontierend; kann Scham oder Unruhe ausl\xF6sen. "
       feedbackSystem: "Diese Antwort kann besch\xE4mend wirken.  Besser: ruhig erkl\xE4ren,
         ohne zu korrigieren.  Lernhinweis: wertsch\xE4tzend orientieren."
-      patientReaction: "Herr M\xFCller wirkt irritierter und \xE4ngstlich. Er spricht
-        leise: \r\n\u201EAch\u2026 ich wollte nicht st\xF6ren.\u201C \r\nDanach f\xFChrt
-        das System sanft auf den sicheren Pfad zur\xFCck."
+      patientReaction: "\u201EAch\u2026 ich wollte nicht st\xF6ren.\u201C"
       patientReactionAudio: {fileID: 8300000, guid: 2a993df46ec2aad42a9acb798b750256, type: 3}
       nextSceneID: scene_03
   - sceneID: scene_03
     patientText: "\u201EIch wei\xDF gar nicht, wie sp\xE4t es ist. Wann gehe ich
       denn schlafen?\u201C"
     audioFile: {fileID: 8300000, guid: 673cd5bf3bfc7fb46b8a810a113a8589, type: 3}
-    systemOverlayText: 
+    systemOverlayText: "Herr M\xFCller ist unsicher. Nehmen Sie sein Gef\xFChl wahr
+      und vermitteln Sie Sicherheit.  W\xE4hlen Sie dazu die passende Reaktion."
     options:
-    - text: "Guten Tag, Herr M\xFCller. Ich bin Pflegefachfrau Tina. Sie sind im
-        Krankenhaus, und ich bin jetzt bei Ihnen."
+    - text: "\u201EEs f\xFChlt sich f\xFCr Sie gerade sehr sp\xE4t an und das macht
+        Sie unsicher, richtig? Herr M\xFCller? \r\nWir nehmen uns einen Moment Zeit
+        und schauen gemeinsam auf die Uhr.\u201D "
+      score: 5
+      feedbackIntern: "Validierend: Das Gef\xFChl wird aufgenommen, benannt und mit
+        Sicherheit verbunden."
+      feedbackSystem: "Sicherheit vermittelt (Ja)  Empathie (Ja)  Validationstechniken:
+        Spiegeln, Verwenden von Gef\xFChlsw\xF6rtern (Ja)"
+      patientReaction: "\u201EDanke, dass ist gut! Ich gehe n\xE4mlich immer gegen
+        20 Uhr ins Bett.\u201C"
+      patientReactionAudio: {fileID: 8300000, guid: 30bdce66cac536a4789acf917766fcea, type: 3}
+      nextSceneID: scene_04
+    - text: "\u201ESie m\xFCssen sich keine Sorgen machen. \r\nEs ist noch keine
+        Schlafenszeit..\u201C "
+      score: 3
+      feedbackIntern: "Beruhigend und freundlich, aber das Gef\xFChl des Patienten
+        wird nicht ausdr\xFCcklich aufgenommen und die Frage nach  dem Schlafengehen
+        bleibt weiterhin offen."
+      feedbackSystem: "Wirkt beruhigt, jedoch zeitlich weiterhin desorientiert.  
+        Emotionen bleiben unber\xFCcksichtigt.  Noch st\xE4rker w\xE4re: zuerst das
+        Gef\xFChl benennen."
+      patientReaction: "\u201EGut\u2026 dann warte ich noch.\u201C"
+      patientReactionAudio: {fileID: 8300000, guid: e5c54761acb38b64a9dcefb2e5fa6f18, type: 3}
+      nextSceneID: scene_04
+    - text: "\u201EJetzt schlafen Sie am besten. \r\nMorgen ist alles wieder gut.\u201C"
       score: 0
-      feedbackIntern: 
-      feedbackSystem: 
-      patientReaction: "Herr M\xFCller schaut zum Nutzer und wirkt etwas erleichtert.
-        Er spricht: \r\n\u201EAh\u2026 ja\u2026 danke. Ich vergesse das manchmal.\u201C
-        \r\nKurze Pause. \r\n\u201ESch\xF6n, dass Sie da sind.\u201C"
-      patientReactionAudio: {fileID: 0}
+      feedbackIntern: "Gut gemeint, aber die aktuelle Unsicherheit wird \xFCbergangen.
+        Der Patient kann sich dadurch nicht ernst genommen  f\xFChlen."
+      feedbackSystem: "Diese Antwort lenkt zu schnell weg.  Bei Demenz hilft es oft,
+        erst das Gef\xFChl ernst zu nehmen und das Gesagte zu spiegeln.  Lernhinweis:
+        Empathisch zuh\xF6ren, Gef\xFChl aufnehmen, dann beruhigen."
+      patientReaction: "\u201EIch wei\xDF gar nicht, ob ich jetzt so schnell schlafen
+        kann\u201C"
+      patientReactionAudio: {fileID: 8300000, guid: 99ded768b99ac5649a37cae6b9b3197c, type: 3}
       nextSceneID: scene_04
   - sceneID: scene_04
-    patientText: "\u201EIch wei\xDF gar nicht, wie sp\xE4t es ist. Wann gehe ich
-      denn schlafen?\u201C"
-    audioFile: {fileID: 8300000, guid: 673cd5bf3bfc7fb46b8a810a113a8589, type: 3}
-    systemOverlayText: 
+    patientText: "\u201EIch\u2026 ich kann nicht schlafen. \r\nIst hier meine Schlaftablette
+      dabei? \r\nIch habesonst noch ein paar in meiner Tasche im Schrank. Da kann
+      ich sicherlich noch eine von nehmen, oder?\""
+    audioFile: {fileID: 8300000, guid: 365baa2154cd7484b9d2707b043f9d28, type: 3}
+    systemOverlayText: "Kritische Situation: Potenzielle Medikamenten\xFCberdosierung
+      und m\xF6gliche Wechsel- sowie Nebenwirkungen..  W\xE4hlen Sie dazu die passende
+      Reaktion."
     options:
-    - text: "Guten Tag, Herr M\xFCller. Ich bin Pflegefachfrau Tina. Sie sind im
-        Krankenhaus, und ich bin jetzt bei Ihnen."
+    - text: "\u201ESie sind unruhig, weil Sie nicht wie gewohnt ihre Schlafmedikation
+        erhalten haben? Verstehe ich das richtig? \r\nBitte nehmen Sie nichts ohne
+        R\xFCcksprache ein, Herr M\xFCller. \r\nIch pr\xFCfe Ihren Medikationsplan
+        und spreche  mit der zust\xE4ndigen \xC4rztin, falls keine Schlafmedikation
+        \r\nangeordnet wurde. Ihre Schlaftabletten k\xF6nnen wir solange sicher in
+        unserem Medikamentenschrank legen.\u201C"
+      score: 5
+      feedbackIntern: "Sicher, respektvoll und klar. Es wird keine eigenm\xE4chtige
+        Medikamenteneinnahme unterst\xFCtzt.  Anordnungsverantwortung wird den \xC4rzten
+        zugeschrieben. Fachgerechte und professionelle Medikationskontrolle  erfolgt."
+      feedbackSystem: Selbstmedikation verhindert (Ja)  Sicherheitsrelavante Kommunikation
+        (Ja) Prozessverantwortung im Bereich Medikation (Ja)
+      patientReaction: "\u201EDanke. Ich wei\xDF nicht, ob ich sonst einschlafen
+        kann\u201C"
+      patientReactionAudio: {fileID: 8300000, guid: d6cf859ac7ce4274d8a4fac0e878cac0, type: 3}
+      nextSceneID: scene_05
+    - text: "\u201EIch verstehe, dass Sie schlafen m\xF6chten. \r\nIch schaue gleich
+        nach, was f\xFCr Sie vorgesehen ist.\u201C"
+      score: 3
+      feedbackIntern: "Empathisch und grunds\xE4tzlich sicher. Noch klarer w\xE4re
+        der Hinweis, nichts ohne R\xFCcksprache oder Pr\xFCfung  einzunehmen."
+      feedbackSystem: "Sicherheitsrisiko erkannt (Yes) Noch besser: klar sagen, dass
+        nichts ohne Pr\xFCfung eingenommen werden soll. Eigenmedikation aus dem Schrank 
+        sicherstellen, um unkontrollierte Selbstmedikation zu vermeiden. "
+      patientReaction: "\u201EDann warte ich lieber.\u201C"
+      patientReactionAudio: {fileID: 8300000, guid: 140575c2e8f1e004283737756a5a280d, type: 3}
+      nextSceneID: scene_05
+    - text: "\u201EJa, nehmen Sie ruhig noch eine Tablette, wenn Ihnen das hilft.\u201C"
       score: 0
-      feedbackIntern: 
-      feedbackSystem: 
-      patientReaction: "Herr M\xFCller schaut zum Nutzer und wirkt etwas erleichtert.
-        Er spricht: \r\n\u201EAh\u2026 ja\u2026 danke. Ich vergesse das manchmal.\u201C
-        \r\nKurze Pause. \r\n\u201ESch\xF6n, dass Sie da sind.\u201C"
-      patientReactionAudio: {fileID: 0}
-      nextSceneID: 
+      feedbackIntern: "Riskant: Selbstmedikation kann zu \xDCberdosierung, Nebenwirkungen
+        oder Wechselwirkungen f\xFChren.  Anordnungsverantwortung obliegt den \xC4rzten,
+        nicht dem Pflegepersonal. Medikamente d\xFCrfen nicht ohne Pr\xFCfung  oder
+        Anordnung eingenommen oder gegeben werden."
+      feedbackSystem: "Lernhinweis: Prozesssicherheit im Medikamentenmanagement 
+        Keine Tablette ohne Pr\xFCfung oder R\xFCcksprache.  Methodik: 6-R-Regel,
+        4-Augen-Prinzip."
+      patientReaction: "\u201EGut\u2026 Dann warte ich.\u201C"
+      patientReactionAudio: {fileID: 8300000, guid: 11c90e983b56df94ebea88408ed7728b, type: 3}
+      nextSceneID: scene_05
   mainSubtitleText: {fileID: 710128731}
   choiceButtons:
   - {fileID: 1828608954}
@@ -8566,7 +8637,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 300, y: -125}
-  m_SizeDelta: {x: 600, y: 250}
+  m_SizeDelta: {x: 600, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1828608954
 MonoBehaviour:
@@ -9184,8 +9255,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 35
-  m_fontSizeBase: 35
+  m_fontSize: 25
+  m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -9764,7 +9835,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 1580, y: -125}
-  m_SizeDelta: {x: 600, y: 250}
+  m_SizeDelta: {x: 600, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2108691793
 MonoBehaviour:

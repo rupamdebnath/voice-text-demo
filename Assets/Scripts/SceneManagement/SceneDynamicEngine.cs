@@ -122,7 +122,10 @@ public class SceneDynamicEngine : MonoBehaviour
         mainSubtitleText.text = selectedOption.feedbackIntern;
         // Display the mandatory metric response card
         yield return CanvasGroupFadeIn(feedbackPanelCanvasGroup);
-
+        yield return new WaitForSeconds(2.0f);
+        yield return CanvasGroupFadeOut(feedbackPanelCanvasGroup);
+        mainSubtitleText.text = selectedOption.patientReaction;
+        yield return CanvasGroupFadeIn(feedbackPanelCanvasGroup);
         //<<Patient Reaction>>
         if (selectedOption.patientReactionAudio != null)
         {
@@ -133,6 +136,7 @@ public class SceneDynamicEngine : MonoBehaviour
         yield return CanvasGroupFadeOut(feedbackPanelCanvasGroup);
         mainSubtitleText.text = selectedOption.feedbackSystem;
         yield return CanvasGroupFadeIn(feedbackPanelCanvasGroup);
+
         /*
         feedbackTextMesh.text = "<b>Feedback:</b> " + selectedOption.feedback + "\n\n" +
                               "<b>Patient:</b> " + selectedOption.patientReaction;
