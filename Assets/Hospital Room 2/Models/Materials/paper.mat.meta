@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f5be52bdf7e48d24e830f7af9f89cb67
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 217074
+  packageName: Hospital Room 2
+  packageVersion: 1.2
+  assetPath: Assets/Hospital Room 2/Models/Materials/paper.mat
+  uploadId: 786166

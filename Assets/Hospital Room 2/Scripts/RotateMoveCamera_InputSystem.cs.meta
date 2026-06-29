@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 699cf882fd174b947b7b2afa402bb052
+AssetOrigin:
+  serializedVersion: 1
+  productId: 217074
+  packageName: Hospital Room 2
+  packageVersion: 1.2
+  assetPath: Assets/Hospital Room 2/Scripts/RotateMoveCamera_InputSystem.cs
+  uploadId: 786166
