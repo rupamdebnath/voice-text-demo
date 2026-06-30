@@ -13,6 +13,7 @@ public class DialogueOption
     [TextArea(2,3)] public string patientReaction;
 
     public AudioClip patientReactionAudio;
+    public AudioClip systemfeedbackAudio;
     public string nextSceneID;
 }
 

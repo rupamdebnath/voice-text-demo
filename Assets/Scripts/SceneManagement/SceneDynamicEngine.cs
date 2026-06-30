@@ -83,7 +83,7 @@ public class SceneDynamicEngine : MonoBehaviour
             LogEvent("DemoCompleted | FinalScore: " + totalScore);
             // Handle conclusion UI transition panel
             finalScenePanel.transform.parent.gameObject.SetActive(true);
-            finalScenePanel.GetComponent<FinalSceneBehaviour>().SetTotalScore(totalScore);
+            //finalScenePanel.GetComponent<FinalSceneBehaviour>().SetTotalScore(totalScore);
             yield return CanvasGroupFadeIn(finalScenePanel.GetComponent<CanvasGroup>());
             yield break;
         }
@@ -147,6 +147,16 @@ public class SceneDynamicEngine : MonoBehaviour
         // Display the mandatory metric response card
         yield return CanvasGroupFadeIn(feedbackPanelCanvasGroup);
         yield return new WaitForSeconds(2.0f);
+
+        if (selectedOption.systemfeedbackAudio != null)
+        {
+            audioPlayer.GetComponent<AudioMouthController>().enabled = false;
+            audioPlayer.clip = selectedOption.systemfeedbackAudio;
+            audioPlayer.Play();
+            yield return new WaitUntil(() => audioPlayer == null || !audioPlayer.isPlaying);
+            audioPlayer.GetComponent<AudioMouthController>().enabled = true;
+        }
+
         yield return CanvasGroupFadeOut(feedbackPanelCanvasGroup);
         mainSubtitleText.text = selectedOption.patientReaction;
         yield return CanvasGroupFadeIn(feedbackPanelCanvasGroup);
@@ -205,6 +215,10 @@ public class SceneDynamicEngine : MonoBehaviour
     public void SetTotalScore(int score)
     {
         totalScore = score;
+    }
+    public int GetTotalScore()
+    {
+        return totalScore;
     }
 
     void OnDestroy()
