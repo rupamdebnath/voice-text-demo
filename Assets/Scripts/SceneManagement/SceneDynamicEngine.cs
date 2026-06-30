@@ -23,20 +23,41 @@ public class SceneDynamicEngine : MonoBehaviour
     public GameObject choicePanel;
     [Header("Audio Output")]
     public AudioSource audioPlayer;
-
+    [Header("Final Scene")]
+    public GameObject finalScenePanel;
     private CanvasGroup choicePanelCanvasGroup;
     private CanvasGroup feedbackPanelCanvasGroup;
 
-    void Start()
+    void OnEnable()
     {
         choicePanelCanvasGroup = choicePanel.GetComponent<CanvasGroup>();
         feedbackPanelCanvasGroup = feedbackPanel.GetComponent<CanvasGroup>();
+
+        sceneDatabase.Clear();
 
         // 1. Lookup
         foreach (var scene in allScenes)
         {
             sceneDatabase[scene.sceneID] = scene;
         }
+
+        if (audioPlayer != null)
+        {
+            audioPlayer.Stop();
+            audioPlayer.clip = null;
+        }
+
+        mainSubtitleText.DOKill();
+        mainSubtitleText.alpha = 1f;
+        feedbackPanelCanvasGroup.alpha = 0f;
+        feedbackPanelCanvasGroup.interactable = false;
+        feedbackPanelCanvasGroup.blocksRaycasts = false;
+        choicePanelCanvasGroup.alpha = 0f;
+        choicePanelCanvasGroup.interactable = false;
+        choicePanelCanvasGroup.blocksRaycasts = false;
+        nextBtn.gameObject.SetActive(false);
+        choicePanel.SetActive(false);
+        feedbackPanel.SetActive(false);
 
         // 2. Fire the global event tracker
         LogEvent("DemoStarted");
@@ -60,7 +81,10 @@ public class SceneDynamicEngine : MonoBehaviour
         if (!sceneDatabase.ContainsKey(targetSceneID))
         {
             LogEvent("DemoCompleted | FinalScore: " + totalScore);
-            // Handle conclusion UI transition panel here
+            // Handle conclusion UI transition panel
+            finalScenePanel.transform.parent.gameObject.SetActive(true);
+            finalScenePanel.GetComponent<FinalSceneBehaviour>().SetTotalScore(totalScore);
+            yield return CanvasGroupFadeIn(finalScenePanel.GetComponent<CanvasGroup>());
             yield break;
         }
 
@@ -156,7 +180,7 @@ public class SceneDynamicEngine : MonoBehaviour
         Debug.Log($"<color=#00F0FF>[AEVUS EVENT]</color> {eventName} | Time: {Time.time:F2}s");
     }
 
-    IEnumerator CanvasGroupFadeIn(CanvasGroup canvasGroup)
+    public IEnumerator CanvasGroupFadeIn(CanvasGroup canvasGroup)
     {        
         canvasGroup.DOKill();
         canvasGroup.alpha = 0f;
@@ -167,7 +191,7 @@ public class SceneDynamicEngine : MonoBehaviour
         canvasGroup.blocksRaycasts = true;
     }
 
-    IEnumerator CanvasGroupFadeOut(CanvasGroup canvasGroup)
+    public IEnumerator CanvasGroupFadeOut(CanvasGroup canvasGroup)
     {
         canvasGroup.DOKill();
         canvasGroup.alpha = 1f;
@@ -176,6 +200,11 @@ public class SceneDynamicEngine : MonoBehaviour
         yield return canvasGroup.DOFade(0f, 1f).WaitForCompletion();
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
+    }
+
+    public void SetTotalScore(int score)
+    {
+        totalScore = score;
     }
 
     void OnDestroy()
