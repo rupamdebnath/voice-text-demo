@@ -12,6 +12,8 @@ public class SceneDynamicEngine : MonoBehaviour
     private Dictionary<string, SceneData> sceneDatabase = new Dictionary<string, SceneData>();
     private SceneData currentActiveScene;
     private int totalScore = 0;
+    [SerializeField] private SkinnedMeshRenderer skinnedMeshRenderer;
+    public float smoothSpeed = 15f;
 
     [Header("UI Canvas Components")]
     public TextMeshProUGUI mainSubtitleText;
@@ -83,7 +85,7 @@ public class SceneDynamicEngine : MonoBehaviour
             LogEvent("DemoCompleted | FinalScore: " + totalScore);
             // Handle conclusion UI transition panel
             finalScenePanel.transform.parent.gameObject.SetActive(true);
-            //finalScenePanel.GetComponent<FinalSceneBehaviour>().SetTotalScore(totalScore);
+
             yield return CanvasGroupFadeIn(finalScenePanel.GetComponent<CanvasGroup>());
             yield break;
         }
@@ -160,7 +162,10 @@ public class SceneDynamicEngine : MonoBehaviour
         yield return CanvasGroupFadeOut(feedbackPanelCanvasGroup);
         mainSubtitleText.text = selectedOption.patientReaction;
         yield return CanvasGroupFadeIn(feedbackPanelCanvasGroup);
+
         //<<Patient Reaction>>
+        yield return PatientReactionBlendShapes(selectedOption);
+
         if (selectedOption.patientReactionAudio != null)
         {
             audioPlayer.clip = selectedOption.patientReactionAudio;
@@ -168,6 +173,7 @@ public class SceneDynamicEngine : MonoBehaviour
             yield return new WaitUntil(() => audioPlayer == null || !audioPlayer.isPlaying);
         }
         yield return CanvasGroupFadeOut(feedbackPanelCanvasGroup);
+        PatientReactionBlendShapesReset();
         mainSubtitleText.text = selectedOption.feedbackSystem;
         yield return CanvasGroupFadeIn(feedbackPanelCanvasGroup);
 
@@ -229,5 +235,38 @@ public class SceneDynamicEngine : MonoBehaviour
         {
             choiceButtons[i].onClick.RemoveAllListeners();
         }
-    }   
+    }
+
+    IEnumerator PatientReactionBlendShapes(DialogueOption selectedOption)
+    {
+        Debug.Log("inside");
+        int currentIndex = 0;
+        List<int> indexes = new List<int> { 1, 2, 3, 5, 13, 14, 15, 16 };
+        foreach(int targetIndex in indexes)
+        {
+            float startweight = skinnedMeshRenderer.GetBlendShapeWeight(targetIndex);
+            float targetWeight = selectedOption.targetValues[currentIndex];
+            float progress = 0f;
+
+            while (progress < 1f)
+            {
+                progress += Time.deltaTime * smoothSpeed;
+                float newWeight = Mathf.Lerp(startweight, targetWeight, progress);
+                skinnedMeshRenderer.SetBlendShapeWeight(targetIndex, newWeight);
+                yield return null;
+            }
+
+            skinnedMeshRenderer.SetBlendShapeWeight(targetIndex, targetWeight);
+            currentIndex++;
+        }
+    }
+
+    void PatientReactionBlendShapesReset()
+    {
+        List<int> indexes = new List<int> { 1, 2, 3, 5, 13, 14, 15, 16 };
+        foreach(int targetIndex in indexes)
+        {
+            skinnedMeshRenderer.SetBlendShapeWeight(targetIndex, 0f);
+        }
+    }
 }

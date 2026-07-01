@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
@@ -6,12 +7,18 @@ public class AudioMouthController : MonoBehaviour
     [Header("Components")]
     [SerializeField] private SkinnedMeshRenderer skinnedMeshRenderer;
     [SerializeField] private int mouthBlendshapeIndex = 0; // Index of your "Mouth_Open" shape
+    [SerializeField] private int eyeCloseIndex = 0; // How smoothly the mouth moves
 
     [Header("Audio Settings")]
     [Range(0.001f, 0.1f)] 
     [SerializeField] private float threshold = 0.02f;      // Frequency volume required to activate mouth
     [SerializeField] private float sensitivity = 500f;     // How wide the mouth opens based on the volume
     [SerializeField] private float smoothSpeed = 15f;      // How smoothly the mouth moves
+
+    [Header("Blink Settings")]
+    [SerializeField] private float blinkInterval = 3f;
+    [SerializeField] private float blinkCloseTime = 0.08f;
+    [SerializeField] private float blinkOpenTime = 0.12f;
 
     private AudioSource audioSource;
     private float[] spectrumData = new float[512];         // Must be a power of 2 (64, 128, 256, 512, etc.)
@@ -25,6 +32,8 @@ public class AudioMouthController : MonoBehaviour
         {
             skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
         }
+
+        StartCoroutine(BlinkLoop());
     }
 
     void Update()
@@ -74,5 +83,32 @@ public class AudioMouthController : MonoBehaviour
         float currentWeight = skinnedMeshRenderer.GetBlendShapeWeight(mouthBlendshapeIndex);
         float newWeight = Mathf.Lerp(currentWeight, 0f, Time.deltaTime * smoothSpeed);
         skinnedMeshRenderer.SetBlendShapeWeight(mouthBlendshapeIndex, newWeight);
+    }
+
+    private IEnumerator BlinkLoop()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(blinkInterval);
+            yield return SetEyeWeight(100f, blinkCloseTime);
+            yield return SetEyeWeight(0f, blinkOpenTime);
+        }
+    }
+
+    private IEnumerator SetEyeWeight(float targetWeight, float duration)
+    {
+        float startWeight = skinnedMeshRenderer.GetBlendShapeWeight(eyeCloseIndex);
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            float newWeight = Mathf.Lerp(startWeight, targetWeight, t);
+            skinnedMeshRenderer.SetBlendShapeWeight(eyeCloseIndex, newWeight);
+            yield return null;
+        }
+
+        skinnedMeshRenderer.SetBlendShapeWeight(eyeCloseIndex, targetWeight);
     }
 }

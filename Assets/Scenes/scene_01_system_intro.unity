@@ -1162,9 +1162,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AudioMouthController
   skinnedMeshRenderer: {fileID: 8776441366429520725}
   mouthBlendshapeIndex: 1
+  eyeCloseIndex: 13
   threshold: 0.001
   sensitivity: 10000
   smoothSpeed: 15
+  blinkInterval: 3
+  blinkCloseTime: 0.08
+  blinkOpenTime: 0.12
 --- !u!1001 &92421184
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6320,6 +6324,15 @@ MonoBehaviour:
       patientReaction: "\u201EAh\u2026 ja\u2026 danke. Ich vergesse das manchmal.\u201C
         \r\n\r\n\u201ESch\xF6n, dass Sie da sind.\u201C"
       patientReactionAudio: {fileID: 8300000, guid: 8d68920cc00834c4c8494b672f118a5e, type: 3}
+      targetValues:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 100
+      - 0
       systemfeedbackAudio: {fileID: 0}
       nextSceneID: scene_03
     - text: "\u201EKeine Sorge, Herr M\xFCller. Es ist alles in Ordnung.\u201C"
@@ -6330,6 +6343,15 @@ MonoBehaviour:
         Eine konkrete situative Orientierung hilft bei Verunsicherung.
       patientReaction: "\u201EJa\u2026 aber wo\u2026 bin ich jetzt?\u201C"
       patientReactionAudio: {fileID: 8300000, guid: 69e0b5c54b1a628499e075653d977928, type: 3}
+      targetValues:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 100
+      - 0
+      - 0
       systemfeedbackAudio: {fileID: 0}
       nextSceneID: scene_03
     - text: "\u201EDas wissen Sie doch. Sie sind im Krankenhaus.\u201C"
@@ -6339,6 +6361,15 @@ MonoBehaviour:
         ohne zu korrigieren.  Lernhinweis: wertsch\xE4tzend orientieren."
       patientReaction: "\u201EAch\u2026 ich wollte nicht st\xF6ren.\u201C"
       patientReactionAudio: {fileID: 8300000, guid: 2a993df46ec2aad42a9acb798b750256, type: 3}
+      targetValues:
+      - 0
+      - 0
+      - 0
+      - 100
+      - 0
+      - 0
+      - 0
+      - 0
       systemfeedbackAudio: {fileID: 0}
       nextSceneID: scene_03
   - sceneID: scene_03
@@ -6359,6 +6390,15 @@ MonoBehaviour:
       patientReaction: "\u201EDanke, dass ist gut! Ich gehe n\xE4mlich immer gegen
         20 Uhr ins Bett.\u201C"
       patientReactionAudio: {fileID: 8300000, guid: 30bdce66cac536a4789acf917766fcea, type: 3}
+      targetValues:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 100
+      - 0
       systemfeedbackAudio: {fileID: 0}
       nextSceneID: scene_04
     - text: "\u201ESie m\xFCssen sich keine Sorgen machen. \r\nEs ist noch keine
@@ -6372,6 +6412,15 @@ MonoBehaviour:
         Gef\xFChl benennen."
       patientReaction: "\u201EGut\u2026 dann warte ich noch.\u201C"
       patientReactionAudio: {fileID: 8300000, guid: e5c54761acb38b64a9dcefb2e5fa6f18, type: 3}
+      targetValues:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 100
+      - 0
+      - 0
       systemfeedbackAudio: {fileID: 0}
       nextSceneID: scene_04
     - text: "\u201EJetzt schlafen Sie am besten. \r\nMorgen ist alles wieder gut.\u201C"
@@ -6384,6 +6433,15 @@ MonoBehaviour:
       patientReaction: "\u201EIch wei\xDF gar nicht, ob ich jetzt so schnell schlafen
         kann\u201C"
       patientReactionAudio: {fileID: 8300000, guid: 99ded768b99ac5649a37cae6b9b3197c, type: 3}
+      targetValues:
+      - 0
+      - 0
+      - 0
+      - 100
+      - 0
+      - 0
+      - 0
+      - 0
       systemfeedbackAudio: {fileID: 0}
       nextSceneID: scene_04
   - sceneID: scene_04
@@ -6410,6 +6468,15 @@ MonoBehaviour:
       patientReaction: "\u201EDanke. Ich wei\xDF nicht, ob ich sonst einschlafen
         kann\u201C"
       patientReactionAudio: {fileID: 8300000, guid: d6cf859ac7ce4274d8a4fac0e878cac0, type: 3}
+      targetValues:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 100
+      - 0
       systemfeedbackAudio: {fileID: 0}
       nextSceneID: scene_05
     - text: "\u201EIch verstehe, dass Sie schlafen m\xF6chten. \r\nIch schaue gleich
@@ -6422,6 +6489,15 @@ MonoBehaviour:
         sicherstellen, um unkontrollierte Selbstmedikation zu vermeiden. "
       patientReaction: "\u201EDann warte ich lieber.\u201C"
       patientReactionAudio: {fileID: 8300000, guid: 140575c2e8f1e004283737756a5a280d, type: 3}
+      targetValues:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 100
+      - 0
+      - 0
       systemfeedbackAudio: {fileID: 0}
       nextSceneID: scene_05
     - text: "\u201EJa, nehmen Sie ruhig noch eine Tablette, wenn Ihnen das hilft.\u201C"
@@ -6435,8 +6511,19 @@ MonoBehaviour:
         4-Augen-Prinzip."
       patientReaction: "\u201EGut\u2026 Dann warte ich.\u201C"
       patientReactionAudio: {fileID: 8300000, guid: 11c90e983b56df94ebea88408ed7728b, type: 3}
+      targetValues:
+      - 0
+      - 0
+      - 0
+      - 100
+      - 0
+      - 0
+      - 0
+      - 0
       systemfeedbackAudio: {fileID: 8300000, guid: 3c9271ebd6df9b74d90717f25db20df1, type: 3}
       nextSceneID: scene_05
+  skinnedMeshRenderer: {fileID: 8776441366429520725}
+  smoothSpeed: 15
   mainSubtitleText: {fileID: 710128731}
   choiceButtons:
   - {fileID: 1828608954}
@@ -6600,6 +6687,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ce3900766ebd1f4ab2f197714d0a102, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuitButton
+  quitButton: {fileID: 0}
 --- !u!1001 &1076823906
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11355,7 +11443,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000030517578, y: 4.7100067}
+  m_AnchoredPosition: {x: 0, y: 4.710022}
   m_SizeDelta: {x: 180, y: 80}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &2029668806
