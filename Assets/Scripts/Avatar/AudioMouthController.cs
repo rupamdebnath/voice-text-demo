@@ -6,8 +6,8 @@ public class AudioMouthController : MonoBehaviour
 {
     [Header("Components")]
     [SerializeField] private SkinnedMeshRenderer skinnedMeshRenderer;
-    [SerializeField] private int mouthBlendshapeIndex = 0; // Index of your "Mouth_Open" shape
-    [SerializeField] private int eyeCloseIndex = 0; // How smoothly the mouth moves
+    [SerializeField] private int mouthBlendshapeIndex = 0; // Index of "Mouth_Open" shape
+    [SerializeField] private int eyeCloseIndex = 0; // Index of the weight
 
     [Header("Audio Settings")]
     [Range(0.001f, 0.1f)] 
