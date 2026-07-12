@@ -18,6 +18,9 @@ public class DialogueOption
     [Header("Patient Reaction Blendshape Indexes")]
     public List<float> targetValues;
     public AudioClip systemfeedbackAudio;
+
+    [Header("User Answer Audio")]
+    public AudioClip userAnswerAudio;
     public string nextSceneID;
 }
 
@@ -26,7 +29,9 @@ public class SceneData
 {
     public string sceneID;
     [TextArea(2,3)] public string patientText;
-    public AudioClip audioFile;
+    [TextArea(2,3)] public string goalText;
+    public AudioClip patientAudio;
+    public AudioClip systemOverlayAudio;
     public string systemOverlayText;
     public List<DialogueOption> options = new List<DialogueOption>();
 }

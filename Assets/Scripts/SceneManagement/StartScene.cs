@@ -4,14 +4,14 @@ using UnityEngine.UI;
 
 public class StartScene : MonoBehaviour
 {
-    public Button button;
+    public Button startButton;
 
     private const float WhiteVeilDefaultAlpha = 171f / 255f;
 
     [Header("UI References")]
     public Image whiteVeilOverlay;
     public GameObject startScreenPanel;
-    public List<RawImage> uiElementsToFade = new List<RawImage>();
+    public List<Image> uiElementsToFade = new List<Image>();
     
     [Header("Fade Settings")]
     public float fadeDuration = 2f;
@@ -25,7 +25,7 @@ public class StartScene : MonoBehaviour
     private void Start()
     {
         ResetStartSceneVisualState();
-        button.onClick.AddListener(OnButtonClick);
+        startButton.onClick.AddListener(OnButtonClick);
     }
 
     private void OnEnable()
@@ -35,11 +35,15 @@ public class StartScene : MonoBehaviour
 
     private void ResetStartSceneVisualState()
     {
+        if (!startButton.gameObject.activeInHierarchy)
+        {
+            startButton.gameObject.SetActive(true);
+        }
         Color overlayColor = whiteVeilOverlay.color;
         overlayColor.a = WhiteVeilDefaultAlpha;
         whiteVeilOverlay.color = overlayColor;
         //Reset default state of UI elements to fully visible
-        foreach (RawImage uiElement in uiElementsToFade)
+        foreach (Image uiElement in uiElementsToFade)
         {
             Color uiColor = uiElement.color;
             uiColor.a = 1.0f;
@@ -71,7 +75,7 @@ public class StartScene : MonoBehaviour
             
             // Fades out alpha value down to 0
             currentColor.a = Mathf.Lerp(WhiteVeilDefaultAlpha, 0.0f, progress);
-            foreach (RawImage uiElement in uiElementsToFade)
+            foreach (Image uiElement in uiElementsToFade)
             {
                 Color uiColor = uiElement.color;
                 uiColor.a = Mathf.Lerp(1.0f, 0.0f, progress);
@@ -93,7 +97,8 @@ public class StartScene : MonoBehaviour
         Color finalColor = whiteVeilOverlay.color;
         finalColor.a = 0.0f;
         whiteVeilOverlay.color = finalColor;
-        startScreenPanel.SetActive(false);
+        //startScreenPanel.SetActive(false);
+        startButton.gameObject.SetActive(false);
         
         Debug.Log("Lobby screen cleared. Scene transition complete.");
         sceneDynamicEngine.gameObject.SetActive(true);

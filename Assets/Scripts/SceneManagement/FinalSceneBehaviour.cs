@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class FinalSceneBehaviour : MonoBehaviour
 {
-    public TextMeshProUGUI finalScoreText;
+    //public TextMeshProUGUI finalScoreText;
     public TextMeshProUGUI successfulTextOverlay;
     public TextMeshProUGUI concludingText13Overlay;
     public TextMeshProUGUI concludingText8Overlay;
@@ -29,7 +29,7 @@ public class FinalSceneBehaviour : MonoBehaviour
     private IEnumerator InitializeFinalScene()
     {
         successfulTextOverlay.gameObject.SetActive(false);
-        finalScoreText.gameObject.SetActive(false);
+        //finalScoreText.gameObject.SetActive(false);
         concludingText13Overlay.gameObject.SetActive(false);
         concludingText8Overlay.gameObject.SetActive(false);
         concludingText0Overlay.gameObject.SetActive(false);
@@ -37,9 +37,9 @@ public class FinalSceneBehaviour : MonoBehaviour
         if(totalScore >= 13)
         {
             Debug.Log("Grat");
-            finalScoreText.gameObject.SetActive(true);
+            //finalScoreText.gameObject.SetActive(true);
             successfulTextOverlay.gameObject.SetActive(true);
-            yield return sceneDynamicEngine.CanvasGroupFadeIn(finalScoreText.GetComponent<CanvasGroup>());
+            //yield return sceneDynamicEngine.CanvasGroupFadeIn(finalScoreText.GetComponent<CanvasGroup>());
             yield return sceneDynamicEngine.CanvasGroupFadeIn(successfulTextOverlay.GetComponent<CanvasGroup>());
             yield return new WaitForSeconds(5f);
             yield return sceneDynamicEngine.CanvasGroupFadeOut(successfulTextOverlay.GetComponent<CanvasGroup>());
@@ -48,8 +48,8 @@ public class FinalSceneBehaviour : MonoBehaviour
         else
         {
             Debug.Log("else");
-            finalScoreText.gameObject.SetActive(true);
-            yield return sceneDynamicEngine.CanvasGroupFadeIn(finalScoreText.GetComponent<CanvasGroup>());            
+            //finalScoreText.gameObject.SetActive(true);
+            //yield return sceneDynamicEngine.CanvasGroupFadeIn(finalScoreText.GetComponent<CanvasGroup>());            
         }
         
         yield return new WaitForSeconds(2f);
@@ -89,6 +89,6 @@ public class FinalSceneBehaviour : MonoBehaviour
     public void SetTotalScore(int score)
     {
         totalScore = sceneDynamicEngine.GetTotalScore();
-        finalScoreText.text = "Final Score: " + totalScore.ToString();
+        //finalScoreText.text = "Final Score: " + totalScore.ToString();
     }
 }

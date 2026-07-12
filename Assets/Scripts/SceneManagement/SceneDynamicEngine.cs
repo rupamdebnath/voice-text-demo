@@ -16,25 +16,32 @@ public class SceneDynamicEngine : MonoBehaviour
     public float smoothSpeed = 15f;
 
     [Header("UI Canvas Components")]
-    public TextMeshProUGUI mainSubtitleText;
+    public TextMeshProUGUI patientAudioText;
     public Button[] choiceButtons;
     public TextMeshProUGUI[] choiceTexts;
+    public GameObject patientPanel;
     public GameObject feedbackPanel;
     public TextMeshProUGUI feedbackTextMesh;
+    public TextMeshProUGUI goalTextMesh;
     public Button nextBtn;
+    public Button feedbackButton;
     public GameObject choicePanel;
     [Header("Audio Output")]
     public AudioSource audioPlayer;
     [Header("Final Scene")]
     public GameObject finalScenePanel;
+    public StressChecker stressChecker;
+    public LightAnimator lightAnimator;
     private CanvasGroup choicePanelCanvasGroup;
     private CanvasGroup feedbackPanelCanvasGroup;
+    private CanvasGroup patientPanelCanvasGroup;
 
     void OnEnable()
     {
         choicePanelCanvasGroup = choicePanel.GetComponent<CanvasGroup>();
         feedbackPanelCanvasGroup = feedbackPanel.GetComponent<CanvasGroup>();
-
+        patientPanelCanvasGroup = patientPanel.GetComponent<CanvasGroup>();
+        feedbackButton.onClick.AddListener(() => StartCoroutine(ClickFeedBackButtonRoutine()));
         sceneDatabase.Clear();
 
         // 1. Lookup
@@ -49,17 +56,22 @@ public class SceneDynamicEngine : MonoBehaviour
             audioPlayer.clip = null;
         }
 
-        mainSubtitleText.DOKill();
-        mainSubtitleText.alpha = 1f;
-        feedbackPanelCanvasGroup.alpha = 0f;
-        feedbackPanelCanvasGroup.interactable = false;
-        feedbackPanelCanvasGroup.blocksRaycasts = false;
+        //patientPanel.SetActive(true);
+        Debug.Log("Active" + patientPanel.activeSelf);
+        patientAudioText.DOKill();
+        patientAudioText.alpha = 1f;
+        /*
+        patientPanelCanvasGroup.alpha = 1f;
+        patientPanelCanvasGroup.interactable = true;
+        patientPanelCanvasGroup.blocksRaycasts = false;
+        */
+
         choicePanelCanvasGroup.alpha = 0f;
         choicePanelCanvasGroup.interactable = false;
         choicePanelCanvasGroup.blocksRaycasts = false;
         nextBtn.gameObject.SetActive(false);
         choicePanel.SetActive(false);
-        feedbackPanel.SetActive(false);
+        patientPanel.SetActive(false);
 
         // 2. Fire the global event tracker
         LogEvent("DemoStarted");
@@ -75,6 +87,12 @@ public class SceneDynamicEngine : MonoBehaviour
 
     private IEnumerator LoadSceneStageRoutine(string targetSceneID)
     {
+        if (feedbackPanelCanvasGroup.alpha > 0f)
+        {
+            yield return CanvasGroupFadeOut(feedbackPanelCanvasGroup);
+            feedbackPanel.SetActive(false);
+            nextBtn.gameObject.SetActive(false);
+        }
         if(nextBtn.gameObject.activeInHierarchy)
         {
             nextBtn.gameObject.SetActive(false);
@@ -85,36 +103,44 @@ public class SceneDynamicEngine : MonoBehaviour
             LogEvent("DemoCompleted | FinalScore: " + totalScore);
             // Handle conclusion UI transition panel
             finalScenePanel.transform.parent.gameObject.SetActive(true);
+            stressChecker.gameObject.SetActive(false);
 
             yield return CanvasGroupFadeIn(finalScenePanel.GetComponent<CanvasGroup>());
             yield break;
         }
 
+        stressChecker.SetStressLevel(0);
+        stressChecker.gameObject.SetActive(true);
+
         currentActiveScene = sceneDatabase[targetSceneID];
         LogEvent("SceneStarted | ID: " + targetSceneID);
 
         // Populate dynamic data inputs straight into your canvas fields
-        mainSubtitleText.DOKill();
-        mainSubtitleText.alpha = 1f;
-        mainSubtitleText.text = currentActiveScene.patientText;
-        feedbackPanel.SetActive(true);
-        yield return CanvasGroupFadeIn(feedbackPanelCanvasGroup);
+        patientAudioText.DOKill();
+        patientAudioText.alpha = 1f;
+        patientAudioText.text = currentActiveScene.patientText;
+        goalTextMesh.text = currentActiveScene.goalText;
+        patientPanel.SetActive(true);
+        yield return CanvasGroupFadeIn(patientPanelCanvasGroup);
 
         // Audio
-        if (currentActiveScene.audioFile != null)
+        if (currentActiveScene.patientAudio != null)
         {
-            audioPlayer.clip = currentActiveScene.audioFile;
+            audioPlayer.clip = currentActiveScene.patientAudio;
             audioPlayer.Play();
 
             yield return new WaitUntil(() => audioPlayer == null || !audioPlayer.isPlaying);
         }
 
-        yield return CanvasGroupFadeOut(feedbackPanelCanvasGroup);
+        yield return CanvasGroupFadeOut(patientPanelCanvasGroup);
         
-        mainSubtitleText.text = currentActiveScene.systemOverlayText;
-        Debug.Log("MainSub" + mainSubtitleText.text);
+        feedbackTextMesh.text = currentActiveScene.systemOverlayText;
+        feedbackPanel.SetActive(true);
         yield return CanvasGroupFadeIn(feedbackPanelCanvasGroup);
+        yield return PlayAnyAudio(currentActiveScene.systemOverlayAudio);
+
         choicePanel.SetActive(true);
+        lightAnimator.gameObject.SetActive(true);
         yield return CanvasGroupFadeIn(choicePanelCanvasGroup);
         // Setup the choice option cards
         for (int i = 0; i < choiceButtons.Length; i++)
@@ -137,33 +163,36 @@ public class SceneDynamicEngine : MonoBehaviour
 
     IEnumerator OnOptionPicked(int optionIndex)
     {
-        DialogueOption selectedOption = currentActiveScene.options[optionIndex];
+        lightAnimator.gameObject.SetActive(false);
 
-        yield return CanvasGroupFadeOut(choicePanelCanvasGroup);
+        //DialogueOption
+        DialogueOption selectedOption = currentActiveScene.options[optionIndex];
+        yield return CanvasGroupFadeOut(feedbackPanelCanvasGroup);
+        //yield return CanvasGroupFadeOut(choicePanelCanvasGroup);
+        feedbackButton.gameObject.SetActive(true);
+
+        feedbackTextMesh.text = selectedOption.feedbackIntern;
+        // Display the mandatory metric response card
+        yield return CanvasGroupFadeIn(feedbackPanelCanvasGroup);
+
+        //User Audio Nurse
+        yield return PlayAnyAudio(selectedOption.userAnswerAudio);
+        yield return new WaitUntil(() => feedbackButton.gameObject.activeInHierarchy == false);
+
         // Track the choice logging actions
         LogEvent("OptionSelected | Choice: " + optionIndex);
         totalScore += selectedOption.score;
         LogEvent("ScoreAdded | Added: " + selectedOption.score + " | TotalScore: " + totalScore);
 
-        mainSubtitleText.text = selectedOption.feedbackIntern;
-        // Display the mandatory metric response card
-        yield return CanvasGroupFadeIn(feedbackPanelCanvasGroup);
-        yield return new WaitForSeconds(2.0f);
-
-        if (selectedOption.systemfeedbackAudio != null)
-        {
-            audioPlayer.GetComponent<AudioMouthController>().enabled = false;
-            audioPlayer.clip = selectedOption.systemfeedbackAudio;
-            audioPlayer.Play();
-            yield return new WaitUntil(() => audioPlayer == null || !audioPlayer.isPlaying);
-            audioPlayer.GetComponent<AudioMouthController>().enabled = true;
-        }
+        //System Feedback Audio
+        yield return PlayAnyAudio(selectedOption.systemfeedbackAudio);
 
         yield return CanvasGroupFadeOut(feedbackPanelCanvasGroup);
-        mainSubtitleText.text = selectedOption.patientReaction;
-        yield return CanvasGroupFadeIn(feedbackPanelCanvasGroup);
+        patientAudioText.text = selectedOption.patientReaction;
+        yield return CanvasGroupFadeIn(patientPanelCanvasGroup);
 
-        //<<Patient Reaction>>
+        //<<Patient Reaction>> And Stress level
+        stressChecker.SetStressLevel(optionIndex);
         yield return PatientReactionBlendShapes(selectedOption);
 
         if (selectedOption.patientReactionAudio != null)
@@ -172,16 +201,13 @@ public class SceneDynamicEngine : MonoBehaviour
             audioPlayer.Play();
             yield return new WaitUntil(() => audioPlayer == null || !audioPlayer.isPlaying);
         }
-        yield return CanvasGroupFadeOut(feedbackPanelCanvasGroup);
-        PatientReactionBlendShapesReset();
-        mainSubtitleText.text = selectedOption.feedbackSystem;
-        yield return CanvasGroupFadeIn(feedbackPanelCanvasGroup);
 
-        /*
-        feedbackTextMesh.text = "<b>Feedback:</b> " + selectedOption.feedback + "\n\n" +
-                              "<b>Patient:</b> " + selectedOption.patientReaction;
-        
-        LogEvent("FeedbackShown");*/
+        PatientReactionBlendShapesReset();
+        stressChecker.SetStressLevel(0);
+
+        yield return CanvasGroupFadeOut(patientPanelCanvasGroup);
+        feedbackTextMesh.text = selectedOption.feedbackSystem;
+        yield return CanvasGroupFadeIn(feedbackPanelCanvasGroup);
 
         // Prepare the Next Button trigger to transition inside this single engine
         Debug.Log("Next Button prepared to load scene: " + selectedOption.nextSceneID);
@@ -268,5 +294,23 @@ public class SceneDynamicEngine : MonoBehaviour
         {
             skinnedMeshRenderer.SetBlendShapeWeight(targetIndex, 0f);
         }
+    }
+
+    IEnumerator PlayAnyAudio(AudioClip audioClip)
+    {
+        if (audioClip != null)
+        {
+            audioPlayer.GetComponent<AudioMouthController>().enabled = false;
+            audioPlayer.clip = audioClip;
+            audioPlayer.Play();
+            yield return new WaitUntil(() => audioPlayer == null || !audioPlayer.isPlaying);
+            audioPlayer.GetComponent<AudioMouthController>().enabled = true;
+        }
+    }
+
+    IEnumerator ClickFeedBackButtonRoutine()
+    {
+        feedbackButton.gameObject.SetActive(false);
+        yield return CanvasGroupFadeOut(choicePanelCanvasGroup);
     }
 }
