@@ -14132,6 +14132,7 @@ MonoBehaviour:
   - sceneID: scene_02
     patientText: "\u201EHallo\u2026? Wo\u2026 bin ich denn hier? \r\nIch wei\xDF
       es gerade nicht mehr.\r\n...\r\nWissen Sie vielleicht, was hier los ist?\""
+    patientStartAnimTrigger: Anxious
     goalText: 'Ziel: Orientierung geben und Sicherheit vermitteln.'
     patientAudio: {fileID: 8300000, guid: ea77594ddcf432f428897d4461626507, type: 3}
     systemOverlayAudio: {fileID: 8300000, guid: 01514944ea0cd24448c48f10e7683e44, type: 3}
@@ -14147,6 +14148,7 @@ MonoBehaviour:
         (Ja)
       patientReaction: "\u201EAh\u2026 ja\u2026 danke. Ich vergesse das manchmal.\u201C
         \r\n\r\n\u201ESch\xF6n, dass Sie da sind.\u201C"
+      patientReactionAnimTrigger: 
       patientReactionAudio: {fileID: 8300000, guid: 8f0b0aa7e7ab5a6438fcc85c47f031ce, type: 3}
       targetValues:
       - 0
@@ -14167,12 +14169,13 @@ MonoBehaviour:
       feedbackSystem: Beruhigend, aber Frage nach dem Ort bleibt weiterhin unklar. 
         Eine konkrete situative Orientierung hilft bei Verunsicherung.
       patientReaction: "\u201EJa\u2026 aber wo\u2026 bin ich jetzt?\u201C"
+      patientReactionAnimTrigger: Anxious
       patientReactionAudio: {fileID: 8300000, guid: 2500a55c088a4f940a0e751d0314d355, type: 3}
       targetValues:
       - 0
       - 0
       - 0
-      - 0
+      - 100
       - 0
       - 100
       - 0
@@ -14186,6 +14189,7 @@ MonoBehaviour:
       feedbackSystem: "Diese Antwort kann besch\xE4mend wirken.  Besser: ruhig erkl\xE4ren,
         ohne zu korrigieren.  Lernhinweis: wertsch\xE4tzend orientieren."
       patientReaction: "\u201EAch\u2026 ich wollte nicht st\xF6ren.\u201C"
+      patientReactionAnimTrigger: LookDown
       patientReactionAudio: {fileID: 8300000, guid: ac0e9781a3dac6c4ab9acf67984b7803, type: 3}
       targetValues:
       - 0
@@ -14202,6 +14206,7 @@ MonoBehaviour:
   - sceneID: scene_03
     patientText: "\u201EIch wei\xDF gar nicht, wie sp\xE4t es ist. Wann gehe ich
       denn schlafen?\u201C"
+    patientStartAnimTrigger: Think
     goalText: "Ziel: Das Gef\xFChl des Patienten wahrnehmen, benennen und Sicherheit
       vermitteln. Der Nutzer soll nicht nur beschwichtigen, sondern emotional anschlie\xDFen."
     patientAudio: {fileID: 8300000, guid: 13a8a9735a32641478a60ba7205b7ef0, type: 3}
@@ -14219,6 +14224,7 @@ MonoBehaviour:
         Spiegeln, Verwenden von Gef\xFChlsw\xF6rtern (Ja)"
       patientReaction: "\u201EDanke, dass ist gut! Ich gehe n\xE4mlich immer gegen
         20 Uhr ins Bett.\u201C"
+      patientReactionAnimTrigger: 
       patientReactionAudio: {fileID: 8300000, guid: cd62328cbc6e8954d8ee9e26879ea60d, type: 3}
       targetValues:
       - 0
@@ -14242,6 +14248,7 @@ MonoBehaviour:
         Emotionen bleiben unber\xFCcksichtigt.  Noch st\xE4rker w\xE4re: zuerst das
         Gef\xFChl benennen."
       patientReaction: "\u201EGut\u2026 dann warte ich noch.\u201C"
+      patientReactionAnimTrigger: 
       patientReactionAudio: {fileID: 8300000, guid: 9523a6f814edc19448f2ab84e10a0332, type: 3}
       targetValues:
       - 0
@@ -14264,6 +14271,7 @@ MonoBehaviour:
         Empathisch zuh\xF6ren, Gef\xFChl aufnehmen, dann beruhigen."
       patientReaction: "\u201EIch wei\xDF gar nicht, ob ich jetzt so schnell schlafen
         kann\u201C"
+      patientReactionAnimTrigger: Anxious
       patientReactionAudio: {fileID: 8300000, guid: 5df593867f127af40a5080914c36020a, type: 3}
       targetValues:
       - 0
@@ -14281,6 +14289,7 @@ MonoBehaviour:
     patientText: "\u201EIch\u2026 ich kann nicht schlafen. \r\nIst hier meine Schlaftablette
       dabei? \r\nIch habesonst noch ein paar in meiner Tasche im Schrank. Da kann
       ich sicherlich noch eine von nehmen, oder?\""
+    patientStartAnimTrigger: LookMed
     goalText: "Ziel: Selbstmedikation verhindern, Verantwortung klar halten und gleichzeitig
       ruhig und respektvoll \r\nkommunizieren."
     patientAudio: {fileID: 8300000, guid: 941813ad19397d1438518a7cce3beb18, type: 3}
@@ -14303,6 +14312,7 @@ MonoBehaviour:
         (Ja) Prozessverantwortung im Bereich Medikation (Ja)
       patientReaction: "\u201EDanke. Ich wei\xDF nicht, ob ich sonst einschlafen
         kann\u201C"
+      patientReactionAnimTrigger: 
       patientReactionAudio: {fileID: 8300000, guid: 187228f37d6d29a41a7f7c2b028fa838, type: 3}
       targetValues:
       - 0
@@ -14325,6 +14335,7 @@ MonoBehaviour:
         nichts ohne Pr\xFCfung eingenommen werden soll. Eigenmedikation aus dem Schrank 
         sicherstellen, um unkontrollierte Selbstmedikation zu vermeiden. "
       patientReaction: "\u201EDann warte ich lieber.\u201C"
+      patientReactionAnimTrigger: LookDown
       patientReactionAudio: {fileID: 8300000, guid: 652e411ad571a614588107d515cfe670, type: 3}
       targetValues:
       - 0
@@ -14348,6 +14359,7 @@ MonoBehaviour:
         Keine Tablette ohne Pr\xFCfung oder R\xFCcksprache.  Methodik: 6-R-Regel,
         4-Augen-Prinzip."
       patientReaction: "\u201EGut\u2026 Dann warte ich.\u201C"
+      patientReactionAnimTrigger: LookMed
       patientReactionAudio: {fileID: 8300000, guid: 79251e4a1c32215438347269dc4a58cf, type: 3}
       targetValues:
       - 0
@@ -14383,6 +14395,7 @@ MonoBehaviour:
   finalScenePanel: {fileID: 1704280031}
   stressChecker: {fileID: 977149727}
   lightAnimator: {fileID: 434088676}
+  patientAnimation: {fileID: 7661255701244260116}
 --- !u!4 &1030733120
 Transform:
   m_ObjectHideFlags: 0
@@ -30328,6 +30341,7 @@ GameObject:
   - component: {fileID: 6996887192134612393}
   - component: {fileID: 4033469346085089235}
   - component: {fileID: 2829369414328468184}
+  - component: {fileID: 7661255701244260116}
   m_Layer: 0
   m_Name: OlderMan_1
   m_TagString: Untagged
@@ -30335,6 +30349,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &7661255701244260116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7661255701244260115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91ccc6231c22c984898a4c1a5bd0307d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PatientAnimation
+  patientAnimator: {fileID: 4033469346085089235}
 --- !u!4 &7696547787869000853
 Transform:
   m_ObjectHideFlags: 0

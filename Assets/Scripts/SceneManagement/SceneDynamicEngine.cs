@@ -35,6 +35,8 @@ public class SceneDynamicEngine : MonoBehaviour
     private CanvasGroup choicePanelCanvasGroup;
     private CanvasGroup feedbackPanelCanvasGroup;
     private CanvasGroup patientPanelCanvasGroup;
+    [Header("Animations")]
+    public PatientAnimation patientAnimation;
 
     void OnEnable()
     {
@@ -116,6 +118,8 @@ public class SceneDynamicEngine : MonoBehaviour
         LogEvent("SceneStarted | ID: " + targetSceneID);
 
         // Populate dynamic data inputs straight into your canvas fields
+        patientAnimation.PlayAnyAnimationTrigger(currentActiveScene.patientStartAnimTrigger);
+        yield return new WaitForSeconds(4f);
         patientAudioText.DOKill();
         patientAudioText.alpha = 1f;
         patientAudioText.text = currentActiveScene.patientText;
@@ -185,6 +189,7 @@ public class SceneDynamicEngine : MonoBehaviour
         LogEvent("ScoreAdded | Added: " + selectedOption.score + " | TotalScore: " + totalScore);
 
         //System Feedback Audio
+        patientAnimation.PlayAnyAnimationTrigger(selectedOption.patientReactionAnimTrigger);
         yield return PlayAnyAudio(selectedOption.systemfeedbackAudio);
 
         yield return CanvasGroupFadeOut(feedbackPanelCanvasGroup);
@@ -193,6 +198,7 @@ public class SceneDynamicEngine : MonoBehaviour
 
         //<<Patient Reaction>> And Stress level
         stressChecker.SetStressLevel(optionIndex);
+
         yield return PatientReactionBlendShapes(selectedOption);
 
         if (selectedOption.patientReactionAudio != null)

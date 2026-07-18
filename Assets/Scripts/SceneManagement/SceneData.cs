@@ -13,6 +13,8 @@ public class DialogueOption
     public string feedbackSystem;
     [TextArea(2,3)] public string patientReaction;
 
+    public string patientReactionAnimTrigger;
+
     public AudioClip patientReactionAudio;
 
     [Header("Patient Reaction Blendshape Indexes")]
@@ -29,6 +31,7 @@ public class SceneData
 {
     public string sceneID;
     [TextArea(2,3)] public string patientText;
+    public string patientStartAnimTrigger;
     [TextArea(2,3)] public string goalText;
     public AudioClip patientAudio;
     public AudioClip systemOverlayAudio;
